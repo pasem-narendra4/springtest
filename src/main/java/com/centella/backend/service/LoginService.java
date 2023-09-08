@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.logging.log4j.util.StringBuilderFormattable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.centella.backend.common.APIResponse;
@@ -20,14 +22,24 @@ public class LoginService {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private JwtUtils jwtUtils;
 	
 	public APIResponse login(LoginRequestDTO loginRequestDTO) {
 		APIResponse apiResponse = new APIResponse();
-		User user = userRepository.findByUsernameIgnoreCaseAndPassword(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
-		System.out.print(user);
+		User user = userRepository.findByUsername(loginRequestDTO.getUsername());
 		if(user==null) {
 			apiResponse.setData("User login failed");
+			return apiResponse;
+		}
+		
+		String password = loginRequestDTO.getPassword();
+		String encodedPassword = user.getPassword();
+		Boolean isPasswordMatched = passwordEncoder.matches(password, encodedPassword);
+		if(!isPasswordMatched) {
+			apiResponse.setData("User failed");
 			return apiResponse;
 		}
 		

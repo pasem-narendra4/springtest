@@ -1,6 +1,7 @@
 package com.centella.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.centella.backend.common.APIResponse;
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	UserRepository repo;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	public APIResponse addUser(AddUserRequestDTO addUserRequestDTO) {
 		APIResponse apiResponse = new APIResponse();
 		User isExisting = repo.findByUsernameIgnoreCaseAndPassword(addUserRequestDTO.getUsername(), addUserRequestDTO.getPassword());
@@ -21,7 +25,8 @@ public class UserServiceImpl implements UserService{
 			User newUser = new User();
 			newUser.setUsername(addUserRequestDTO.getUsername());
 			newUser.setEmailId(addUserRequestDTO.getEmail());
-			newUser.setPassword(addUserRequestDTO.getPassword());
+			String encodedStringPassword = passwordEncoder.encode(addUserRequestDTO.getPassword());
+			newUser.setPassword(encodedStringPassword);
 			repo.save(newUser);
 			apiResponse.setData("User created successfully");
 			return apiResponse;
