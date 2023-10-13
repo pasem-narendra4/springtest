@@ -2,6 +2,7 @@ package com.centella.backend.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.servlet.handler.WebRequestHandlerInterceptorAdapter;
 
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
+@CrossOrigin
 public class JwtInterceptor extends WebRequestHandlerInterceptorAdapter{
 	
 	@Autowired

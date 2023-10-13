@@ -1,0 +1,22 @@
+version: "3.7"
+services: 
+ app: 
+  image: app
+  build: .
+  restart: always
+  ports:
+  - 8080:8080
+  environment:
+   SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/users?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+   SPRING_DATASOURCE_USERNAME: root
+   SPRING_DATASOURCE_PASSWORD: Watson@12
+  depends_on:
+   - db
+ 
+ db:
+  image: mysql:8.0.33
+  environment:
+   DATABASE_HOST: docker-mysql
+   DATABASE_PORT: 3306
+   MYSQL_ROOT_PASSWORD: Watson@12
+   MYSQL_DATABASE: users

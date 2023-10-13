@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.centella.backend.common.APIResponse;
 import com.centella.backend.dtos.AddUserRequestDTO;
+import com.centella.backend.dtos.UpdateUserRequestDTO;
 import com.centella.backend.entity.User;
 import com.centella.backend.repository.UserRepository;
 
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService{
 		if(isExisting==null) {
 			User newUser = new User();
 			newUser.setUsername(addUserRequestDTO.getUsername());
-			newUser.setEmailId(addUserRequestDTO.getEmail());
+			newUser.setEmailId(addUserRequestDTO.getEmailId());
 			String encodedStringPassword = passwordEncoder.encode(addUserRequestDTO.getPassword());
 			newUser.setPassword(encodedStringPassword);
 			repo.save(newUser);
@@ -34,4 +35,22 @@ public class UserServiceImpl implements UserService{
 		apiResponse.setData("Already exists");
 		return apiResponse;
 	}
+
+	public APIResponse updateUser(UpdateUserRequestDTO updateUserRequestDTO, String username) {
+		APIResponse apiResponse = new APIResponse();
+		User currentUser = repo.findByUsername(username);
+		if(currentUser!=null) {
+			currentUser.setName(updateUserRequestDTO.getName());
+			currentUser.setCity(updateUserRequestDTO.getCity());
+			currentUser.setCountry(updateUserRequestDTO.getCountry());
+			currentUser.setEmailId(updateUserRequestDTO.getEmailId());
+			repo.save(currentUser);
+			apiResponse.setData("User updated successfully");
+			return apiResponse;
+		}
+		apiResponse.setData("User does not exists");
+		return apiResponse;
+		
+	}
+
 }

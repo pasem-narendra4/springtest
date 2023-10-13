@@ -7,31 +7,27 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class AddUserRequestDTO {
-	private String username;
-	private String password;
+@NoArgsConstructor
+public class UpdateUserRequestDTO {
 	private String name;
 	private String emailId;
 	private String designation;
 	private String organisation;
 	private String country;
 	private String city;
-	public AddUserRequestDTO() {
+	public UpdateUserRequestDTO(String name, String emailId, String designation, String organisation, String country,
+			String city) {
 		super();
+		this.name = name;
+		this.emailId = emailId;
+		this.designation = designation;
+		this.organisation = organisation;
+		this.country = country;
+		this.city = city;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
+	public UpdateUserRequestDTO() {
+		super();
 	}
 	public String getName() {
 		return name;
@@ -67,18 +63,6 @@ public class AddUserRequestDTO {
 		return city;
 	}
 	public void setCity(String city) {
-		this.city = city;
-	}
-	public AddUserRequestDTO(String username, String password, String name, String emailId, String designation,
-			String organisation, String country, String city) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.emailId = emailId;
-		this.designation = designation;
-		this.organisation = organisation;
-		this.country = country;
 		this.city = city;
 	}
 	
